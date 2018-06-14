@@ -8,7 +8,7 @@ const routes = require('./routes/routes');
 
 mongoose.Promise = global.Promise;
 
-mongoose.connect('mongodb://localhost:27017/passport')
+mongoose.connect('mongodb://root:GzaBOIyTBmR7@rootlocalhost:27017/passport')
     .then(() => console.log("Connection to DB successful"))
     .catch((err) => console.error(err));
 
