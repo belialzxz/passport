@@ -1,0 +1,106 @@
+<p-growl [value]="msgs"></p-growl>
+
+<div style="padding:5%">
+<p-tree [value]="fileTree" layout="horizontal" selectionMode="single" [(selection)]="selectedNode" >
+    <ng-template let-node pTemplate="default">
+            
+        <div (click)="nodeSelect($event, nc, node)" >
+            <span  *ngIf="!node.leaf &amp;&amp; (node.children != undefined &amp;&amp; node.children.length > 0)">
+                <i  [ngClass]="(node.expanded)?'fa fa-minus':'fa fa-plus'" (click)="onClick($event, node)"></i>
+            </span>
+            <div style="display: inline-block; min-width:85%; text-align: center">
+                <h5 style="display: inline; font-size:.8em; font-weight:bold;">{{node.label}}</h5>
+            </div>
+             <div *ngIf="node.low && node.high" class="chip" style="max-width:65px; margin:0 auto;">
+                    {{node.low}} : {{node.high}}
+             </div>
+        </div>
+        
+        
+        
+    </ng-template>
+</p-tree>
+
+
+
+<p-overlayPanel #nc [showCloseIcon]="true" [dismissable]="true" (onBeforeShow)="resetOverLay()">
+    <div *ngIf="isRoot" class="ui-g ui-fluid">
+        <div class="ui-g-12 form-group">
+                <label for="nodeLabel">Node Label: </label>
+                <input class="form-control" id="nodeLabel" name="nodeLabelRef" #nodeLabelRef="ngModel" type="text" 
+                    pInputText [(ngModel)]="nodeLabel" required/>
+            
+        </div>
+        <div *ngIf="nodeLabelRef.invalid && (nodeLabelRef.dirty || nodeLabelRef.touched)"
+            class="alert alert-danger">
+
+            <div *ngIf="nodeLabelRef.errors.required">
+                Node label is required.
+            </div>
+        </div>
+        <div class="ui-g-12 form-group">
+                <label for="numRange">Number Range: </label>
+                <p-slider id="numRange" [(ngModel)]="numRange" [range]="true" styleCla="form-control"
+                    [min]="1" [max]="400"></p-slider>
+        </div>
+        <div class="ui-g-12">
+            <span>Low: {{numRange[0]}} - High: {{numRange[1]}}</span>
+        </div>
+        <div class="ui-g-12">
+            <p-button label="Create Node" (onClick)="createNode($event, nc)" 
+                [disabled]="(nodeLabelRef.invalid && (nodeLabelRef.dirty || nodeLabelRef.touched)) || nodeLabelRef.pristine"></p-button>
+        </div>
+
+    </div>
+    <p-tabView *ngIf="!isRoot">
+        <p-tabPanel header="Generate Child Nodes">
+            <p-panel [showHeader]="false">
+                <label for="leafCount">Generate: </label>
+                <input class="form-control" id="leafCount" name="leafCountRef" #leafCountRef="ngModel" type="number" pInputText [(ngModel)]="leafCount"
+                    [min]="1" [max]="15" required/>
+                <div *ngIf="leafCountRef.invalid && (leafCountRef.dirty || leafCountRef.touched)"
+                    class="alert alert-danger">
+
+                    <div *ngIf="leafCountRef.errors.required">
+                        Leaf Count is required.
+                    </div>
+                    <div *ngIf="leafCountRef.errors.min || leafCountRef.errors.max">
+                            Leaf Count must be between 1 - 15.
+                    </div>
+                </div>
+                <p-button label="Generate" (onClick)="generateNodes($event, nc)"
+                    [disabled]="(leafCountRef.invalid && (leafCountRef.dirty || leafCountRef.touched)) || leafCountRef.pristine"></p-button>
+            </p-panel>
+        </p-tabPanel>
+        <p-tabPanel header="Edit Node">
+            <div class="ui-g ui-fluid">
+                <div class="ui-g-12 form-group">
+                    <label for="editLabel">Node Label: </label>
+                    <input class="form-control" id="editLabel" type="text" name="editLabelRef" #editLabelRef="ngModel" pInputText [(ngModel)]="selectedNode.label" required/>
+                    <div *ngIf="editLabelRef.invalid && (editLabelRef.dirty || editLabelRef.touched)"
+                        class="alert alert-danger">
+
+                        <div *ngIf="editLabelRef.errors.required">
+                            Node label is required.
+                        </div>
+                    </div>
+                    <div *ngIf="editLabelRef.pristine && editLabelRef.touched"
+                        class="alert alert-warning">
+                        Although the label value can be the same, it must initially be chanaged, or cleared in order to edit.
+                    
+                    </div>
+                </div>
+                <div class="ui-g-12 form-group">
+                    <div class="ui-g-6">
+                        <p-button label="Edit" (onClick)="onEditNode($event, nc)"
+                        [disabled]="(editLabelRef.invalid && (editLabelRef.dirty || editLabelRef.touched)) || editLabelRef.pristine"></p-button>
+                    </div>
+                    <div class="ui-g-6">
+                        <p-button label="Delete" (onClick)="onDeleteNode($event, nc)"></p-button>
+                    </div>
+                </div>
+            </div>
+        </p-tabPanel>
+    </p-tabView>
+</p-overlayPanel>
+</div>
