@@ -31,11 +31,11 @@ export class AppComponent implements OnInit, OnDestroy{
   ngOnInit(){
 
     this.sub = this.nodeService.getDataStream().subscribe((data) => {
-      console.log('Stream data recieved: '+JSON.stringify(data));
       this.fileTree = data;
     },
     error => {
       this.msgs = []
+      console.error('Error receiving data from Data Stream ', error);
       this.msgs.push({severity: 'error', summary: 'Data Stream Error', detail: 'There was an error with the Data Stream to the server.'})
     }
   );
@@ -45,6 +45,7 @@ export class AppComponent implements OnInit, OnDestroy{
   },
   error => {
     this.msgs = []
+    console.error('Error retriving Nodes from Server ', error);
     this.msgs.push({severity: 'error', summary: 'Data Retrieval Error', detail: 'There was an error retrieving data from the server.'})
   }
 );
@@ -53,7 +54,9 @@ export class AppComponent implements OnInit, OnDestroy{
   }
 
   createNode(event, overlay: OverlayPanel){
-    if(this.dupeCheck){
+    let dupe: Boolean = this.dupeCheck();
+    if(dupe){
+      this.msgs = [];
       this.msgs.push({severity: 'error', summary:'Duplicate Label', detail: 'Node Labels must be unique'});
     }
     else{
@@ -66,9 +69,7 @@ export class AppComponent implements OnInit, OnDestroy{
     });
 
     this.nodeService.updateNode(this.selectedNode).subscribe((resp) => {
-
-      console.log('Node Created');
-      //clear numRange.
+    //clear numRange.
     this.numRange = [1,1];
 
     //close overlay
@@ -82,6 +83,7 @@ export class AppComponent implements OnInit, OnDestroy{
       this.selectedNode.children.pop();
       if(this.selectedNode.children.length == 0)
         this.selectedNode.expanded = false;
+        console.error('Error updating nodes ', error);
       this.msgs.push({severity: 'error', summary:'DB Update Error', detail: 'There was an error updating the DB.'});
     }
     );
@@ -118,6 +120,7 @@ export class AppComponent implements OnInit, OnDestroy{
     },
       error =>{ 
         this.selectedNode.children = [];
+        console.error('Error updating nodes ', error);
         this.msgs.push({severity: 'error', summary:'DB Update Error', detail: 'There was an error updating the DB.'});}
     );
   }
@@ -132,6 +135,7 @@ export class AppComponent implements OnInit, OnDestroy{
       overlay.hide();
       },
       error => {
+        console.error('Error updating nodes ', error);
         this.msgs.push({severity: 'error', summary:'DB Update Error', detail: 'There was an error updating the DB.'});
       }
     );
@@ -153,6 +157,7 @@ export class AppComponent implements OnInit, OnDestroy{
     },
     error => {
       parent.children = oringalChildren;
+      console.error('Error deleting node ', error);
       this.msgs.push({severity: 'error', summary:'DB Update Error', detail: 'There was an error updating the DB.'}); 
     }
     );
@@ -185,7 +190,8 @@ export class AppComponent implements OnInit, OnDestroy{
   }
 
   dupeCheck(){
-    return this.selectedNode.children.find((node) => node.label.toLowerCase() == this.nodeLabel.toLowerCase()) != undefined;
+     let node: Node = this.selectedNode.children.find((node) => node.label.toLowerCase() == this.nodeLabel.toLowerCase());
+     return node != undefined;
   }
 
   findParent(id: String): Node {

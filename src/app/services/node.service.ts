@@ -9,16 +9,15 @@ import * as io from 'socket.io-client'
 @Injectable()
 export class NodeService {
 
-    readonly serverURL = "http://localhost:8090/";
+    readonly serverURL = "http://54.89.17.143:8090/";
     socket;
     observer: Observer<Array<Node>>;
 
     constructor(private http: HttpClient){ }
 
     getDataStream(): Observable<Array<Node>>{
-        this.socket = io.connect('http://localhost:8090');
+        this.socket = io.connect(this.serverURL);
         this.socket.on('data', (res) => {
-            console.log("socket on() fired");
             this.observer.next(res);
         });
 

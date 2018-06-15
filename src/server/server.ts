@@ -8,7 +8,8 @@ const routes = require('./routes/routes');
 
 mongoose.Promise = global.Promise;
 
-mongoose.connect('mongodb://root:GzaBOIyTBmR7@rootlocalhost:27017/passport')
+mongoose.connect('mongodb://passportAdmin:paSSP0rt@localhost:27017/passport',{uri_decode_auth: true 
+})
     .then(() => console.log("Connection to DB successful"))
     .catch((err) => console.error(err));
 
@@ -24,7 +25,7 @@ let sockets = new Set();
 
 
 app.use(function (req, res, next) { 
-    res.setHeader('Access-Control-Allow-Origin', 'http://localhost:4200'); 
+    res.setHeader('Access-Control-Allow-Origin', 'http://54.89.17.143'); 
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE'); 
     res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type'); 
     res.setHeader('Access-Control-Allow-Credentials', "true"); 
