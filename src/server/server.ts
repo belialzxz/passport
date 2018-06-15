@@ -21,11 +21,11 @@ app.use(bodyParser.json());
 
 let sockets = new Set();
 
-
+const serverUrl = 'http://18.233.151.213/';
 
 
 app.use(function (req, res, next) { 
-    res.setHeader('Access-Control-Allow-Origin', 'http://54.89.17.143'); 
+    res.setHeader('Access-Control-Allow-Origin', serverUrl); 
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE'); 
     res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type'); 
     res.setHeader('Access-Control-Allow-Credentials', "true"); 
