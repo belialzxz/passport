@@ -32,6 +32,8 @@ export class AppComponent implements OnInit, OnDestroy{
 
     this.sub = this.nodeService.getDataStream().subscribe((data) => {
       this.fileTree = data;
+      this.msgs = [];
+      this.msgs.push({severity: 'info', summary: 'Data Update Recived', detail:'Updated Data Recived from Server.'});
     },
     error => {
       this.msgs = []

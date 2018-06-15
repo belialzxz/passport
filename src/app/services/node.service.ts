@@ -9,7 +9,7 @@ import * as io from 'socket.io-client'
 @Injectable()
 export class NodeService {
 
-    readonly serverURL = "http://18.233.151.213/";
+    readonly serverURL = "http://18.233.151.213:8090/";
     socket;
     observer: Observer<Array<Node>>;
 
