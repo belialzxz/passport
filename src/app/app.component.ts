@@ -23,6 +23,7 @@ export class AppComponent implements OnInit, OnDestroy{
   isRoot: boolean = false;
   nodeLabel: string = "";
   leafCount: number = 0;
+  maxLeaf: number = 15;
 
   sub: Subscription;
 
@@ -174,6 +175,7 @@ export class AppComponent implements OnInit, OnDestroy{
     if(!this.selectedNode.leaf){
       this.isRoot = this.selectedNode.label == 'Root';
       overlay.toggle(event, event.srcElement);
+      this.maxLeaf = 15 - this.selectedNode.children.length;
     }
     else {
       
@@ -182,13 +184,11 @@ export class AppComponent implements OnInit, OnDestroy{
     }
   }
 
-  onClick(event, node: Node){
-    if(node.parentId == undefined && !node.expanded == false)
-      this.collapseAll(node);
+  onNodeCollapse(event){
+    if(event.node.parentId == undefined && !event.expanded == false)
+      this.collapseAll(event.node);
     else
-      node.expanded = !node.expanded;
-
-    event.stopPropagation();
+    event.expanded = !event.node.expanded;
   }
 
   dupeCheck(){

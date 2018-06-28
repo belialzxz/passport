@@ -1,17 +1,15 @@
 <p-growl [value]="msgs"></p-growl>
 
 <div style="padding:5%">
-<p-tree [value]="fileTree" layout="horizontal" selectionMode="single" [(selection)]="selectedNode" >
+<p-tree [value]="fileTree" layout="horizontal" selectionMode="single" [(selection)]="selectedNode" 
+    (onNodeCollapse)="onNodeCollapse($event)">
     <ng-template let-node pTemplate="default">
             
-        <div (click)="nodeSelect($event, nc, node)" >
-            <span  *ngIf="!node.leaf &amp;&amp; (node.children != undefined &amp;&amp; node.children.length > 0)">
-                <i  [ngClass]="(node.expanded)?'fa fa-minus':'fa fa-plus'" (click)="onClick($event, node)"></i>
-            </span>
-            <div style="display: inline-block; min-width:85%; text-align: center">
+        <div (click)="nodeSelect($event, nc, node)">
+            <div style="display: inline-block; min-width:100%; text-align: center">
                 <h5 style="display: inline; font-size:.8em; font-weight:bold;">{{node.label}}</h5>
             </div>
-             <div *ngIf="node.low && node.high" class="chip" style="max-width:65px; margin:0 auto;">
+             <div *ngIf="node.low && node.high" class="chip" style="margin:0 auto; max-width: 65px;">
                     {{node.low}} : {{node.high}}
              </div>
         </div>
@@ -57,7 +55,7 @@
             <p-panel [showHeader]="false">
                 <label for="leafCount">Generate: </label>
                 <input class="form-control" id="leafCount" name="leafCountRef" #leafCountRef="ngModel" type="number" pInputText [(ngModel)]="leafCount"
-                    [min]="1" [max]="15" required/>
+                    [min]="1" [max]="maxLeaf" required/>
                 <div *ngIf="leafCountRef.invalid && (leafCountRef.dirty || leafCountRef.touched)"
                     class="alert alert-danger">
 
@@ -65,7 +63,7 @@
                         Leaf Count is required.
                     </div>
                     <div *ngIf="leafCountRef.errors.min || leafCountRef.errors.max">
-                            Leaf Count must be between 1 - 15.
+                            Leaf Count must be between 1 - {{maxLeaf}}.
                     </div>
                 </div>
                 <p-button label="Generate" (onClick)="generateNodes($event, nc)"
