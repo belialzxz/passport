@@ -175,7 +175,6 @@ export class AppComponent implements OnInit, OnDestroy{
     if(!this.selectedNode.leaf){
       this.isRoot = this.selectedNode.label == 'Root';
       overlay.toggle(event, event.srcElement);
-      this.maxLeaf = 15 - this.selectedNode.children.length;
     }
     else {
       
