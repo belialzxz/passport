@@ -1,8 +1,7 @@
 <p-growl [value]="msgs"></p-growl>
 
 <div style="padding:5%">
-<p-tree [value]="fileTree" layout="horizontal" selectionMode="single" [(selection)]="selectedNode" 
-    (onNodeCollapse)="onNodeCollapse($event)">
+<p-tree [value]="fileTree" layout="horizontal" selectionMode="single" [(selection)]="selectedNode">
     <ng-template let-node pTemplate="default">
             
         <div (click)="nodeSelect($event, nc, node)">

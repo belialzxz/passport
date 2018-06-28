@@ -184,14 +184,7 @@ export class AppComponent implements OnInit, OnDestroy{
     }
   }
 
-  onNodeCollapse(event){
-    if(event.node.parentId == undefined && !event.expanded == false)
-      this.collapseAll(event.node);
-    else
-    event.expanded = !event.node.expanded;
-  }
-
-  dupeCheck(){
+dupeCheck(){
      let node: Node = this.selectedNode.children.find((node) => node.label.toLowerCase() == this.nodeLabel.toLowerCase());
      return node != undefined;
   }
@@ -214,7 +207,6 @@ export class AppComponent implements OnInit, OnDestroy{
     for(let child of node.children){
       child.expanded = false;
     }
-    node.expanded = false;
   }
 
   ngOnDestroy(){
