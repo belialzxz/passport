@@ -41,14 +41,13 @@
   /*******************End Bootstrap Rules **************************************/
 
   .chip {
-    padding: 0 8px;
     /*height: 50px;*/
     font-size: .8em;
     line-height: .8em;
     border-radius: 8px;
     background-color: #867e7e;
     color:#fff;
-    padding:5% 5%;
+    padding:2px 5px;
     text-align: center;
 }
 
@@ -58,9 +57,9 @@
     min-width:140px !important;
 }
 
-.ui-treenode-label {
+/*.ui-treenode-label {
     width:100% !important;
-}
+}*/
 
 /***********************End PrimeNG overrides*************************************/
 
