@@ -97,6 +97,7 @@ export class AppComponent implements OnInit, OnDestroy{
 
   generateNodes(event, overlay: OverlayPanel){
     this.selectedNode.children = [];
+    this.leafCount = this.leafCount > 15 ? 15 : this.leafCount;
     for(let i = 1; i <= this.leafCount; i++){
       let randomLabel = Math.floor(Math.random() * (this.selectedNode.high - this.selectedNode.low +1) + this.selectedNode.low);
       this.selectedNode.children.push({
